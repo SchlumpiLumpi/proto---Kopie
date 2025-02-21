@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  script.
+    var base_data = !{base_data}
+    var keys = !{keys}
+    var keys_numerical = !{keys_numerical}
+    var scatter_dataset = !{scatter_dataset}
+    var statistics = !{statistics}
+    
+    console.log('data: ', base_data)
+    console.log('keys: ', keys)
+    console.log('numerical keys: ', keys_numerical)
+    console.log('scatter dataset: ', scatter_dataset)
+    console.log('statistics:', statistics)
+  //noUiSlider
+  script(defer src='./javascripts/nouislider.js')
+  style.
+    .noUi-handle {
+    width: 10px !important ;
+    right: -5px !important ; 
+    background:rgb(45, 85, 186);
+    }
+
+  // my functions
+  script(type='module' defer src='./javascripts/create_UI.js') 
+  script(type='module' defer src='./javascripts/map_renderer.js')
+  script(type='module' defer src='./javascripts/dynamic_scatter_layout.js')
+  script(type='module' defer src='./javascripts/dynamic_scatter_draw.js')
+
+  .container-fluid
+    .card.mb-2.mb-2.bg-light
+      .card-header 
+        // Upload Form
+        form#uploadForm(action='/uploadLocalFile', method='post', enctype='multipart/form-data')
+          .form-group.row
+            label.col-2.col-form-label(for='upload_local_file') 
+              h6 Upload JSON
+            .col-10
+              .col-sm-5
+                input.form-control#upload_local_file(type='file', name='file_upload' onchange="this.form.submit()")
+              
+      .row.my-3
+        .col-xl-10 
+          #map
+        .col-xl-2
+          // Dropdown menu, calculating SpaAutoCorr
+          .dropdown
+            button.btn.btn-secondary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+              p Dropdown
+            ul.dropdown-menu#dropdown_menu
+          // Highlight features, checkbox parameter, slider, number input
+          #highlight_menu
+          // Radiobuttons, draw Scatterplot
+          #checkbox_menu
+          
+  .container-fluid
+    .row.my-3
+      table#charts_table.table
+      
